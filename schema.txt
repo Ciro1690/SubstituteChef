@@ -1,0 +1,30 @@
+User
+-
+username string PK
+password string
+email string
+first_name string
+last_name string
+wage float
+rating float
+
+Restaurnt
+-
+id int PK
+name string
+address string
+city string
+state string
+postal_code string
+latitude string
+longitude string
+URL string
+rating float
+
+Job
+-
+id int PK
+type string
+date date
+username FK
+restaurant_id FK
