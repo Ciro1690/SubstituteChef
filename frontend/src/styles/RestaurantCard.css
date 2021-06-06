@@ -1,0 +1,20 @@
+.restaurant-card {
+  width: 100%;
+  text-align: left;
+  margin: auto;
+  font-size: 12px;
+}
+
+.selected-card {
+    border: 1px solid lightgray;
+    background-color: whitesmoke;
+    padding: 15px;
+}
+
+.inner-card {
+    border: 2px solid #eeeeee;
+    box-shadow: 1px 1px #eeeeee;
+    padding: 15px;
+    line-height: 25px;
+    border-radius: 3px;
+}
