@@ -6,53 +6,53 @@ import {
     Button
 } from 'reactstrap'; 
 
-const Profile = ({editUser, setUserInfo}) => {
+const Profile = ({setUserInfo, editUser}) => {
     const { userInfo } = useContext(UserContext);
-    console.log(userInfo)
-
+    
     const INITIAL_STATE = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
-        email: userInfo.email
+        email: userInfo.email,
+        isCompany: userInfo.isCompany
     };
 
     const [formData, setFormData] = useState(INITIAL_STATE);
     const [errors, setErrors] = useState([]);
 
 
-        const handleSubmit = async e => {
-        e.preventDefault();
-        const editData = {
-            "firstName": formData.firstName,
-            "lastName": formData.lastName,
-            "email": formData.email,
-            "isCompany": formData.isCompany            
-        };
-        await editUser(userInfo.username, editData)
-            .then((res) => {
-                if (res.success) {
-                    const NEW_STATE = {
-                        firstName: res.user.firstName,
-                        lastName: res.user.lastName,
-                        email: res.user.email,
-                        isCompany: res.user.isCompany,
-                    }
-                    setUserInfo(data => ({
-                        ...data,
-                        ...NEW_STATE
-                    }))
-                    alert("Updated user info")
+    const handleSubmit = async e => {
+    e.preventDefault();
+    const editData = {
+        "firstName": formData.firstName,
+        "lastName": formData.lastName,
+        "email": formData.email,
+        "isCompany": formData.isCompany            
+    };
+    await editUser(userInfo.username, editData)
+        .then((res) => {
+            if (res.success) {
+                console.log('res', res)
+                const NEW_STATE = {
+                    "firstName": res.user.firstName,
+                    "lastName": res.user.lastName,
+                    "email": res.user.email,
+                    "isCompany": res.user.isCompany
                 }
-                else {
-                    setErrors(res.errors);
-                }
-            })
+                setUserInfo(data => ({
+                    ...data,
+                    ...NEW_STATE
+                }))
+                alert("Updated user info")
+            }
+            else {
+                setErrors(res.errors);
+            }
+        })
     }
 
     const handleChange = e => {
         const name = e.target.name;
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        console.log(name, value)
         setFormData(data => ({
             ...data,
             [name]: value
@@ -97,9 +97,10 @@ const Profile = ({editUser, setUserInfo}) => {
                         name="isCompany"
                         onChange={handleChange}
                         value={formData.isCompany}
+                        checked={!!formData.isCompany}
                     />
                 </FormGroup>
-                <Button>Submit</Button>
+                <Button>Edit Account</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>

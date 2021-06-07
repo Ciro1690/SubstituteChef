@@ -98,23 +98,21 @@ class User {
             return result.rows[0];
         }
 
-    static async update(username,
-        {firstName, lastName, email, isCompany}) {
-        
+    static async update(username, data) {
             const result = await db.query(
                 `UPDATE users
-                SET (first_name,
-                    last_name,
-                    email,
-                    is_company)
-                WHERE username = ${username}
-                VALUES ($1, $2, $3, $4)
-                RETURNING first_name AS "firstName", last_name AS "lastName", email, is_company AS "isCompany"`,
+                 SET first_name=$1,
+                    last_name=$2,
+                    email=$3,
+                    is_company=$4
+                 WHERE username = $5
+                 RETURNING first_name AS "firstName", last_name AS "lastName", email, is_company AS "isCompany"`,
                 [
-                firstName,
-                lastName,
-                email,
-                isCompany
+                data.firstName,
+                data.lastName,
+                data.email,
+                data.isCompany,
+                username
                 ]                
             )
             return result.rows[0];

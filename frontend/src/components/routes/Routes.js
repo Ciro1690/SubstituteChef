@@ -43,7 +43,7 @@ const Routes = () => {
 
     const editUser = async (currentUser, formData) => {
         try {
-            const user = await ChefApi.editUser(currentUser.username, formData);
+            const user = await ChefApi.editUser(currentUser, formData);
             return {success: true, user}
         }
         catch (err) {
@@ -57,15 +57,15 @@ const Routes = () => {
         localStorage.removeItem('token');
     }
 
-    useEffect(function getUserInfo() {
+    useEffect(() => {
         async function getCurrentUser() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
                     let { username } = jwt.decode(token);
                     ChefApi.token = token;
-                    const userInfo = await ChefApi.getCurrentUser(username);
                     setCurrentUser(username)
+                    const userInfo = await ChefApi.getCurrentUser(username)
                     setUserInfo(userInfo)
                 }
                 catch (e) {
