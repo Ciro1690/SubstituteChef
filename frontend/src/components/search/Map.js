@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import axios from 'axios';
 require('dotenv').config()
 
-const Map = ({clickedRestaurant}) => {
-    const location = {lat: clickedRestaurant.latitude, lng: clickedRestaurant.longitude}
+const Map = ({companies}) => {
+
+    const [coordinates, setCoordinates] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        async function loadCoordinates() {
+            let coordsArr = [];
+            for (let company of companies) {
+                const location = company.address
+                await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                    params:{
+                        address: location,
+                        key: process.env.REACT_APP_API_KEY
+                    }
+                })
+                    .then(function(response){
+                        let location = response.data.results[0].geometry.location
+                        let coordinates = [company.id.toString(), {lat: location.lat, lng: location.lng}]
+                        coordsArr.push(coordinates)      
+                    })
+                    .catch(function(error) {
+                        console.log(error)
+                    }) 
+            }
+            setCoordinates(coordsArr);
+            setIsLoaded(true)
+        }
+        loadCoordinates();
+    }, [companies]);
+
+    const location = {lat: 32.74544, lng: -117.14369}
     const mapStyles = {
         height: "70vh",
         width: "100%"
     }
 
     return (
-        Object.keys(clickedRestaurant).length !== 0  ?
+        isLoaded  ?
             <LoadScript
                 googleMapsApiKey= {process.env.REACT_APP_API_KEY}>
             <GoogleMap
@@ -18,15 +49,18 @@ const Map = ({clickedRestaurant}) => {
                 zoom = { 13 }
                 center = { location } 
             >
-            {
-                <Marker 
-                    key={clickedRestaurant.name} 
-                    position={location} />
+            {coordinates.map(coord => (
+                <Marker key={coord[0]}
+                    label={coord[0]} 
+                    position={coord[1]}
+                    labelInBackground={true}
+                />
+                ))
             })
             </GoogleMap >
             </LoadScript>
             :
-            <div className="mobile-empty">Click a restaurant card to load the map</div>
+            <p>Loading...</p>
     )
 }
 

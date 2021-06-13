@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from '../home/Home';
-import Search from '../search/Search'
+import CompanyList from '../search/CompanyList';
 import NavBar from '../nav/NavBar';
 import Login from '../auth/Login';
-import Signup from '../auth/Signup';
+import UserSignup from '../auth/UserSignup';
+import CompanySignup from '../companies/CompanySignup';
 import UserContext from "./UserContext";
 import ProtectedRoute from './ProtectedRoute';
 import Profile from '../auth/Profile';
+import CompanyProfile from '../companies/CompanyProfile';
+import Applications from '../jobs/Applications';
+import JobSignup from '../jobs/JobSignup';
 import ChefApi from '../api/api';
 import jwt from 'jsonwebtoken';
 
@@ -16,8 +20,9 @@ const Routes = () => {
     const [token, setToken] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
+    const [companies, setCompanies] = useState(null);
 
-    const SignUp = async formData => {
+    const registerUser = async formData => {
         try {
             const token = await ChefApi.Signup(formData)
             setCurrentUser(formData.username)
@@ -41,32 +46,24 @@ const Routes = () => {
         }
     }
 
-    const editUser = async (currentUser, formData) => {
-        try {
-            const user = await ChefApi.editUser(currentUser, formData);
-            return {success: true, user}
-        }
-        catch (err) {
-            return {success: false, errors: err}
-        }
-    }
-
     const LogOut = () => {
         setCurrentUser(null)
         setToken(null)
         localStorage.removeItem('token');
     }
 
-    useEffect(() => {
+    useEffect(function getUserInfo() {
         async function getCurrentUser() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
                     let { username } = jwt.decode(token);
                     ChefApi.token = token;
+                    const user= await ChefApi.getUserInfo(username);
+                    const companies = await ChefApi.getCompaniesFromUsername(username);
                     setCurrentUser(username)
-                    const userInfo = await ChefApi.getCurrentUser(username)
-                    setUserInfo(userInfo)
+                    setUserInfo(user)
+                    setCompanies(companies)
                 }
                 catch (e) {
                     console.log(e)
@@ -85,16 +82,28 @@ const Routes = () => {
                         <Home />
                     </Route>
                     <Route exact path="/search">
-                        <Search />
+                        <CompanyList />
                     </Route>
                     <Route exact path="/signup">
-                        <Signup SignUp = {SignUp}/>
+                        <UserSignup registerUser={registerUser}/>
                     </Route>
                     <Route exact path="/login">
                         <Login LogIn= {LogIn} />
                     </Route>
+                    <Route exact path="/applications">
+                        <Applications currentUser={currentUser} />
+                    </Route>
                     <ProtectedRoute exact path="/profile">
-                        <Profile setUserInfo={setUserInfo} editUser={editUser}/>
+                        <Profile companies={companies} setUserInfo={setUserInfo}/>
+                    </ProtectedRoute>
+                    <ProtectedRoute exact path="/companyprofile">
+                        <CompanyProfile companies={companies} />
+                    </ProtectedRoute>
+                    <ProtectedRoute exact path="/job">
+                        <JobSignup  currentUser={currentUser} />
+                    </ProtectedRoute> 
+                    <ProtectedRoute exact path="/company">
+                        <CompanySignup currentUser={currentUser}/>
                     </ProtectedRoute>
                     <Route>
                         <p>I can't seem to find what you want</p>

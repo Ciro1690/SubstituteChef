@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import logo from "../../assets/logo.png";
+import React from "react";
+import logo from "../../assets/sub chef LOGO/Artboard 2.png";
 import {Link} from "react-router-dom";
-import UserContext from '../routes/UserContext';
 import {
     Navbar,
     Nav,
@@ -12,14 +11,12 @@ import '../../styles/Navbar.css';
 
 const NavBar = ({LogOut}) => {
 
-    const {currentUser} = useContext(UserContext);
     const token = localStorage.getItem('token');
-    console.log(token)
 
   return (
     <Navbar className="navbar navbar-expand-lg navbar-light bg-light">
         <NavLink tag={Link} to="/" className="navbar-brand">
-            <img src={logo} alt="logo"/>
+            <img className="logo" src={logo} alt="logo"/>
         </NavLink>
     {token ? 
         <Nav navbar>
@@ -27,13 +24,16 @@ const NavBar = ({LogOut}) => {
                 <NavLink tag={Link} to="/search">Search for Jobs</NavLink>
             </NavItem>
             <NavItem>
+                <NavLink tag={Link} to="/company">Register a Company</NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink tag={Link} to="/job">Post a Job</NavLink>
+            </NavItem>
+            <NavItem>
                 <NavLink tag={Link} to="/profile">Profile</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} to="/business">Register as a Business</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink tag={Link} to="/" onClick={LogOut}>Logout {currentUser}</NavLink>
+                <NavLink tag={Link} to="/" onClick={LogOut}>Logout</NavLink>
             </NavItem>
         </Nav> :
         <Nav navbar>

@@ -26,6 +26,10 @@ class ChefApi {
         }
     }
 
+/**
+ * User api methods
+ */
+
     static async Signup(data) {
         let res = await this.request(`auth/signup`, data, "post");
         return res.token;
@@ -36,7 +40,7 @@ class ChefApi {
         return res.token;
     }
 
-    static async getCurrentUser(username) {
+    static async getUserInfo(username) {
         let res = await this.request(`users/${username}`);
         return res.user;
     }
@@ -50,7 +54,80 @@ class ChefApi {
         let res = await this.request(`users/${username}`, "delete");
         return res;
     }
-}
+
+/**
+* Company api methods
+*/
+ 
+    static async getAllCompanies() {
+            let res = await this.request("companies");
+            return res.companies;
+        }
+
+    static async getCompany(id) {
+            let res = await this.request(`companies/${id}`);
+            return res.company;
+        }
+
+    static async getCompaniesFromUsername(username) {
+        let res = await this.request(`companies/username/${username}`);
+        return res;
+    }
+
+    static async signUpCompany(data) {
+        let res = await this.request(`companies/signup`, data, "post");
+        return res;
+    }
+
+    static async editCompany(id, data) {
+        let res = await this.request(`companies/${id}`, data, "patch");
+        return res.company;
+    }
+
+    static async deleteCompany(id) {
+        let res = await this.request(`companies/${id}`, "delete");
+        return res;
+    }
+
+/**
+* Job api methods
+*/
+ 
+    static async getAllJobs() {
+            let res = await this.request("jobs");
+            return res.jobs;
+        }
+
+    static async getJob(id) {
+            let res = await this.request(`jobs/${id}`);
+            return res.job;
+        }
+
+    static async getJobsForCompany(companyId) {
+            let res = await this.request(`jobs/company/${companyId}`);
+            return res.jobs;
+        }
+
+    static async signUpJob(data) {
+        let res = await this.request(`jobs/new`, data, "post");
+        return res;
+    }
+
+    static async editJob(id, data) {
+        let res = await this.request(`jobs/${id}`, data, "patch");
+        return res.job;
+    }
+
+    static async deleteJob(id) {
+        let res = await this.request(`jobs/${id}`, "delete");
+        return res;
+    }
+
+    static async applyToJob(username, jobId) {
+        let res = await this.request(`users/${username}/jobs/${jobId}`, jobId, "post");
+        return res.applied;
+    }
+ }
 
 ChefApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +

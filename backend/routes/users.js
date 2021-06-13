@@ -47,7 +47,6 @@ router.get('/:username', async (req, res, next) => {
  * 
  * Returns { username, firstName, lastName, email, isCompany }
  * 
- * Authorization required: same user
  */
 
 router.patch('/:username', async (req, res, next) => {
@@ -67,10 +66,28 @@ router.patch('/:username', async (req, res, next) => {
  * Authorization required: same user
  */
 
-router.delete('/:username', ensureCorrectUser, async (req, res, next) => {
+router.delete('/:username', async (req, res, next) => {
     try {
         await User.remove(req.params.username)
         return res.json({ deleted: req.params.username })
+    }
+    catch (err) {
+        return next(err);
+    }
+});
+
+/**
+ * 
+ * POST /[username]/jobs/[id] => { application }
+ * 
+ * Returns {"applied": jobId}
+ */
+
+router.post('/:username/jobs/:id', async (req, res, next) => {
+    try {
+        const jobId = +req.params.id;
+        await User.applyToJob(req.params.username, jobId)
+        return res.json({ applied: jobId })
     }
     catch (err) {
         return next(err);

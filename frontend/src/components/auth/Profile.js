@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { editUser } from '../utilities/utility';
 import UserContext from '../routes/UserContext';
 import {
     Form,
@@ -6,9 +7,8 @@ import {
     Button
 } from 'reactstrap'; 
 
-const Profile = ({setUserInfo, editUser}) => {
+const Profile = ({ setUserInfo }) => {
     const { userInfo } = useContext(UserContext);
-    
     const INITIAL_STATE = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
@@ -61,7 +61,7 @@ const Profile = ({setUserInfo, editUser}) => {
 
     return (
         <>
-            <h1>{userInfo.firstName}'s Profile</h1>
+            <h1>User Profile</h1>
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <label id="firstName">First Name: </label>
@@ -104,9 +104,10 @@ const Profile = ({setUserInfo, editUser}) => {
                 <div>
                     {errors.length ?
                         <p>{errors}</p>
-                    : null }
+                        : null }
                 </div>
             </Form>
+            <a href="/applications"><Button>View Applications</Button></a>
         </>
     )
 }

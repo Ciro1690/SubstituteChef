@@ -1,6 +1,6 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
-const ExpressError = require("../expressError");
+const { NotFoundError, UnauthorizedError, BadRequestError } = require("../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
 class User {
@@ -15,10 +15,20 @@ class User {
             WHERE username = $1`,
             [username]
         );
-        if (!result.rows[0]) {
-            throw new ExpressError(`Username ${username} is invalid`, 400)
+
+        const user = result.rows[0];
+
+        if (!user) {
+            throw new NotFoundError(`Username ${username} is invalid`, 400)
         }
-        return result.rows[0]
+
+        const userApplications = await db.query(
+            `SELECT applications.job_id
+             FROM applications
+             WHERE applications.username = $1`, [username]);
+        
+        user.applications = userApplications.rows.map(applications => applications.job_id);
+        return user;
     }
 
     static async findAll() {
@@ -58,7 +68,7 @@ class User {
             }
         }
 
-        throw new ExpressError("Invalid username/password");
+        throw new UnauthorizedError("Invalid username/password");
     }
 
     static async register(
@@ -71,7 +81,7 @@ class User {
             );
 
             if (duplicateCheck.rows[0]) {
-                throw new ExpressError(`Duplicate username: ${username}`);
+                throw new BadRequestError(`Duplicate username: ${username}`);
             }
 
             const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
@@ -117,6 +127,43 @@ class User {
             )
             return result.rows[0];
         }
+
+    static async remove(username) {
+            const result = await db.query(
+                `DELETE
+                 FROM users
+                 WHERE username = $1
+                 RETURNING username`,
+                [username]                
+            );
+            const user = result.rows[0];
+
+            if (!user) throw new NotFoundError(`No user ${username}`);
+            return user;
+        }
+
+    static async applyToJob(username, jobId) {
+        const jobCheck = await db.query(
+            `SELECT id
+            FROM jobs
+            WHERE id = $1`, [jobId]);
+        const job = jobCheck.rows[0];
+
+        if (!job) throw new NotFoundError(`No job: ${jobId}`);
+        
+        const usernameCheck = await db.query(
+            `SELECT username
+            FROM users
+            WHERE username = $1`, [username]);
+        const user = usernameCheck.rows[0];
+
+        if (!user) throw new NotFoundError(`No username: ${username}`);
+          
+        await db.query(
+            `INSERT INTO applications (username, job_id)
+            VALUES ($1, $2)`,
+            [username, jobId]);
+    }
 }
 
 module.exports = User;

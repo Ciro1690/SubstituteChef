@@ -1,3 +1,16 @@
+const jwt = require("jsonwebtoken");
+const { SECRET_KEY } = require("../config");
+
+function authenticateJWT(req, res, next) {
+    try {
+        const payload = jwt.verify(req.body._token, SECRET_KEY);
+        req.user = payload;
+        return next();
+    } catch (e) {
+        return next();
+    }
+}
+
 function ensureLoggedIn(req, res, next) {
     if (!req.user) {
         return next({status: 401, message: "Unauthorized"});
@@ -22,6 +35,7 @@ function ensureCorrectUser(req, res, next) {
 }
 
 module.exports = {
+    authenticateJWT,
     ensureLoggedIn,
     ensureCorrectUser
 };

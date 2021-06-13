@@ -27,6 +27,7 @@ CREATE TABLE jobs (
 );
 
 CREATE TABLE applications (
+  status string DEFAULT PENDING
   username VARCHAR(25)
     REFERENCES users ON DELETE CASCADE,
   job_id INTEGER
