@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import {
-    Form,
-    FormGroup,
+    FormControlLabel,
+    TextField,
+    Checkbox,
     Button
-} from 'reactstrap'; 
+} from '@material-ui/core'; 
 import "../../styles/Register.css"
 
 const UserSignup = ({ registerUser }) => {
@@ -65,69 +66,61 @@ const UserSignup = ({ registerUser }) => {
 
     return (
         <div className="register-div">
-            <h1>Signup for Substitute Chef</h1>
-            <Form onSubmit={handleSubmit}>
-                <FormGroup>
-                    <label id="username">Username: </label>
-                    <input
-                        type="text"
-                        name="username"
-                        onChange={handleChange}
-                        value={formData.username}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="password">Password: </label>
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={handleChange}
-                        value={formData.password}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="firstName">First Name: </label>
-                    <input
-                        type="text"
-                        name="firstName"
-                        onChange={handleChange}
-                        value={formData.firstName}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="lastName">Last Name: </label>
-                    <input
-                        type="text"
-                        name="lastName"
-                        onChange={handleChange}
-                        value={formData.lastName}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="email">Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        onChange={handleChange}
-                        value={formData.email}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="isCompany">Are you a Business?: </label>
-                    <input
-                        type="checkbox"
-                        name="isCompany"
-                        onChange={handleChange}
-                        value={formData.isCompany}
-                    />
-                </FormGroup>
-                <Button>Submit</Button>
+            <h1>Welcome to Substitute Chef!</h1>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    required
+                    label="Username"
+                    type="text"
+                    name="username"
+                    onChange={handleChange}
+                    value={formData.username}/>
+                    <br></br>
+                <TextField
+                    required
+                    label="Password"
+                    type="password"
+                    name="password"
+                    onChange={handleChange}
+                    value={formData.password}/>
+                <br></br>
+                <TextField
+                    required
+                    label="First Name"
+                    type="text"
+                    name="firstName"
+                    onChange={handleChange}
+                    value={formData.firstName}/>
+                    <br></br>
+                <TextField
+                    required
+                    label="Last Name"
+                    type="text"
+                    name="lastName"
+                    onChange={handleChange}
+                    value={formData.lastName}/>
+                    <br></br>
+                <TextField
+                    required
+                    label="Email"
+                    type="email"
+                    name="email"
+                    onChange={handleChange}
+                    value={formData.email}/>
+                    <br></br>
+                <FormControlLabel
+                    control={<Checkbox value={formData.isCompany} checked={formData.isCompany} onChange={handleChange} name="isCompany" />}
+                    label="Register a Company?"/><br></br>
+                <Button 
+                    type="submit"
+                    variant="contained" 
+                    color="primary">Login</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>
                     : null }
                 </div>
-            </Form>
+            </form>
         </div>
     )
 }

@@ -23,11 +23,11 @@ class User {
         }
 
         const userApplications = await db.query(
-            `SELECT applications.job_id
+            `SELECT applications.job_id, applications.status
              FROM applications
              WHERE applications.username = $1`, [username]);
         
-        user.applications = userApplications.rows.map(applications => applications.job_id);
+        user.applications = userApplications.rows.map(applications => [applications.job_id, applications.status]);
         return user;
     }
 
@@ -160,9 +160,34 @@ class User {
         if (!user) throw new NotFoundError(`No username: ${username}`);
           
         await db.query(
-            `INSERT INTO applications (username, job_id)
-            VALUES ($1, $2)`,
-            [username, jobId]);
+            `INSERT INTO applications (status, username, job_id)
+            VALUES ($1, $2, $3)`,
+            ['PENDING', username, jobId]);
+    }
+
+    static async updateApplicationStatus(username, jobId, status) {
+        const jobCheck = await db.query(
+            `SELECT id
+            FROM jobs
+            WHERE id = $1`, [jobId]);
+        const job = jobCheck.rows[0];
+
+        if (!job) throw new NotFoundError(`No job: ${jobId}`);
+        
+        const usernameCheck = await db.query(
+            `SELECT username
+            FROM users
+            WHERE username = $1`, [username]);
+        const user = usernameCheck.rows[0];
+
+        if (!user) throw new NotFoundError(`No username: ${username}`);
+          
+        await db.query(
+            `UPDATE applications
+             SET status = $1
+             WHERE username = $2 AND job_id = $3
+             RETURNING status`,
+            [status, username, jobId]);
     }
 }
 

@@ -14,15 +14,19 @@ VALUES ('testuser',
         'test2@user2.com'
         );
 
-INSERT INTO companies (name, url, address, username)
+INSERT INTO companies (name, url, address, lat, lng, username)
 VALUES ('Saiko Sushi Coronado',
         'http://saikosushisd.com/',
         '116 Orange Ave, Coronado CA, 92118',
+        32.6987, 
+        -117.173,
         'testuser'
         ),
        ('The Fishery',
         'https://www.thefishery.com/',
         '5040 Cass St, San Diego CA, 92118',
+        32.80069,
+        -117.2547,
         'test2user2'
         );
 

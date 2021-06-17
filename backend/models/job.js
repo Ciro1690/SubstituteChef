@@ -72,10 +72,19 @@ class Job {
             WHERE company_id = $1`,
             [companyId]
         );
-        if (!result.rows[0]) {
+        let jobs = result.rows;
+        if (!jobs) {
             throw new NotFoundError(`No company id ${companyId}`, 400)
         }
-        return result.rows
+
+        for (let i=0; i<jobs.length; i++) {
+            const jobApplications = await db.query(
+                `SELECT applications.job_id, applications.username, applications.status
+                 FROM applications
+                 WHERE applications.job_id = $1`, [jobs[i].id]);
+                 jobs[i].applications = jobApplications.rows.map(applications => [applications.job_id, applications.username, applications.status]);
+        }
+        return jobs;
     }
 
     static async findAll() {
@@ -96,9 +105,9 @@ class Job {
     static async update(id, data) {
             const result = await db.query(
                 `UPDATE jobs
-                 SET position=$1,
-                    hourly_pay=$2,
-                    date=$3
+                 SET position = $1,
+                    hourly_pay = $2,
+                    date = $3
                  WHERE id = $4
                  RETURNING id, position, hourly_pay AS "hourlyPay", date`,
                 [

@@ -11,6 +11,16 @@ export async function editUser(currentUser, formData) {
     }
 }
 
+export async function editCompany(companyId, formData) {
+    try {
+        const company = await ChefApi.editCompany(companyId, formData);
+        return {success: true, company}
+    }
+    catch (err) {
+        return {success: false, errors: err}
+    }
+}
+
 export async function registerJob (formData) {
     try {
         const job = await ChefApi.signUpJob(formData)

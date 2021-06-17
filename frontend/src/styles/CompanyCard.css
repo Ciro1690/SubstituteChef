@@ -14,6 +14,13 @@
   font-size: 12px;
 }
 
+.company-info {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
 .selected-card {
     border: 1px solid lightgray;
     background-color: whitesmoke;

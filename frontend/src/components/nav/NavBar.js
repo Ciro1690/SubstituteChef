@@ -21,16 +21,16 @@ const NavBar = ({LogOut}) => {
     {token ? 
         <Nav navbar>
             <NavItem>
-                <NavLink tag={Link} to="/search">Search for Jobs</NavLink>
-            </NavItem>
-            <NavItem>
                 <NavLink tag={Link} to="/company">Register a Company</NavLink>
             </NavItem>
             <NavItem>
                 <NavLink tag={Link} to="/job">Post a Job</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} to="/profile">Profile</NavLink>
+                <NavLink tag={Link} to="/user">User</NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink tag={Link} to="/companies">Company</NavLink>
             </NavItem>
             <NavItem>
                 <NavLink tag={Link} to="/" onClick={LogOut}>Logout</NavLink>

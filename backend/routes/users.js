@@ -1,5 +1,4 @@
 const express = require("express");
-const { ensureCorrectUser, ensureLoggedIn } = require("../middleware/auth");
 const User = require("../models/user");
 
 const router = express.Router();
@@ -88,6 +87,18 @@ router.post('/:username/jobs/:id', async (req, res, next) => {
         const jobId = +req.params.id;
         await User.applyToJob(req.params.username, jobId)
         return res.json({ applied: jobId })
+    }
+    catch (err) {
+        return next(err);
+    }
+});
+
+router.patch('/:username/jobs/:id', async (req, res, next) => {
+    try {
+        const jobId = +req.params.id;
+        const status = req.body.status;
+        await User.updateApplicationStatus(req.params.username, jobId, status)
+        return res.json({ status: req.body.status })
     }
     catch (err) {
         return next(err);

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { registerJob } from '../utilities/utility';
 import {
-    Form,
-    FormGroup,
+    TextField,
+    MenuItem,
+    Select,
+    InputLabel,
     Button
-} from 'reactstrap'; 
+} from '@material-ui/core'; 
 import "../../styles/Register.css"
 import ChefApi from '../api/api';
 
@@ -67,50 +69,57 @@ const JobSignUp = ({ currentUser }) => {
         <div>
             <h1>Post a Job</h1>
             {!isLoaded ? <div>Loading...</div> : null}
-            <Form onSubmit={handleSubmit}>
-                <FormGroup>
-                    <label id="position">Position: </label>
-                    <input
-                        type="text"
-                        name="position"
-                        onChange={handleChange}
-                        value={formData.position}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="hourlyPay">Hourly Pay: </label>
-                    <input
-                        type="number"
-                        min="14"
-                        name="hourlyPay"
-                        onChange={handleChange}
-                        value={formData.hourlyPay}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="date">Date: </label>
-                    <input
-                        type="date"
-                        name="date"
-                        onChange={handleChange}
-                        value={formData.date}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label id="company">Company:</label>
-                        <select name="companyId" value={formData.companyId} onChange={handleChange}>
-                            {companies.map(company => (
-                                <option value={company.id} key={company.id}>{company.name}</option>
-                            ))}
-                        </select>
-                </FormGroup>
-                <Button>Submit</Button>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    required
+                    label="Position"
+                    type="text"
+                    name="position"
+                    onChange={handleChange}
+                    value={formData.position}/>
+                    <br></br>
+                <TextField
+                    required
+                    label="Hourly Pay"
+                    type="number"
+                    min="14"
+                    name="hourlyPay"
+                    onChange={handleChange}
+                    value={formData.hourlyPay}/>
+                    <br></br>
+                <TextField
+                    required
+                    type="date"
+                    label="Date"
+                    name="date"
+                    onChange={handleChange}
+                    value={formData.date}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}/>
+                    <br></br>
+                <InputLabel>Company</InputLabel>
+                <Select
+                    required
+                    displayEmpty
+                    label="Company"
+                    name="companyId" 
+                    value={formData.companyId} 
+                    onChange={handleChange}>
+                    {companies.map(company => (
+                        <MenuItem value={company.id} key={company.id}>{company.name}</MenuItem>
+                    ))}
+                    </Select><br></br>
+                <Button 
+                    type="submit"
+                    variant="contained" 
+                    color="primary">Post Job</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>
                     : null }
                 </div>
-            </Form>
+            </form>
         </div>
         :
         <h1>Register a company to post a job</h1>

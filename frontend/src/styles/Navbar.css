@@ -1,3 +1,18 @@
 .logo {
-    width: 25%;
+    width: 10vh;
+}
+
+
+@media (min-width: 1136px) {
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-width: 0;
+        min-height: 0;
+        padding-top: 24px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
 }

@@ -127,6 +127,11 @@ class ChefApi {
         let res = await this.request(`users/${username}/jobs/${jobId}`, jobId, "post");
         return res.applied;
     }
+
+    static async updateApplication(username, jobId, status) {
+        let res = await this.request(`users/${username}/jobs/${jobId}`, status, "patch");
+        return res.status;
+    }
  }
 
 ChefApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +

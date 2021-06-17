@@ -13,6 +13,8 @@ CREATE TABLE companies (
   name TEXT NOT NULL,
   url TEXT,
   address TEXT NOT NULL,
+  lat FLOAT NOT NULL,
+  lng FLOAT NOT NULL,
   username TEXT NOT NULL
     REFERENCES users ON DELETE CASCADE
 );
@@ -27,7 +29,7 @@ CREATE TABLE jobs (
 );
 
 CREATE TABLE applications (
-  status string DEFAULT PENDING
+  status TEXT DEFAULT 'PENDING',
   username VARCHAR(25)
     REFERENCES users ON DELETE CASCADE,
   job_id INTEGER
