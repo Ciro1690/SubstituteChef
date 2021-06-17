@@ -2,6 +2,10 @@
     width: 10vh;
 }
 
+.logo2 {
+    width: 40vh;
+}
+
 
 @media (min-width: 1136px) {
     .navbar {

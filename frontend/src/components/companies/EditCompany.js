@@ -23,7 +23,6 @@ const EditCompany = ({ company }) => {
     
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log('submit')
         const editData = {
             "name": formData.name,
             "address": formData.address,
@@ -32,7 +31,6 @@ const EditCompany = ({ company }) => {
         await editCompany(id, editData)
             .then((res) => {
                 if (res.success) {
-                    console.log('res', res)
                     const NEW_STATE = {
                         "name": res.company.name,
                         "address": res.company.address,
@@ -77,6 +75,7 @@ const EditCompany = ({ company }) => {
                         name="url"
                         onChange={handleChange}
                         value={formData.url}/>
+                        <br></br>
                     <TextField
                         label="Address"
                         type="text"

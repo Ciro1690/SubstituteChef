@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import {
-    FormControlLabel,
     TextField,
-    Checkbox,
     Button
 } from '@material-ui/core'; 
 import "../../styles/Register.css"
@@ -14,8 +12,7 @@ const UserSignup = ({ registerUser }) => {
         password: "", 
         firstName: "", 
         lastName: "", 
-        email: "",
-        isCompany: false
+        email: ""
     };
 
     const [formData, setFormData] = useState(INITIAL_DATA);
@@ -29,26 +26,15 @@ const UserSignup = ({ registerUser }) => {
             "password":formData.password,
             "firstName": formData.firstName,
             "lastName": formData.lastName,
-            "email": formData.email,
-            "isCompany": formData.isCompany            
+            "email": formData.email
         };
         const result = await registerUser(registerData)
-
-        let companyRedirect
-        if (formData.isCompany) {
-            companyRedirect = true;
-        }
         
         setFormData(INITIAL_DATA);
         
         if (result.success) {
             alert("Created account for Substitute Chef")
-            if (companyRedirect) {
-                history.push("/company")
-            }
-            else {
-                history.push("/");
-            }
+            history.push("/");
         } else {
             setErrors(result.errors);
         }
@@ -57,7 +43,6 @@ const UserSignup = ({ registerUser }) => {
     const handleChange = e => {
         const name = e.target.name;
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        console.log(name, value)
         setFormData(data => ({
             ...data,
             [name]: value
@@ -108,9 +93,6 @@ const UserSignup = ({ registerUser }) => {
                     onChange={handleChange}
                     value={formData.email}/>
                     <br></br>
-                <FormControlLabel
-                    control={<Checkbox value={formData.isCompany} checked={formData.isCompany} onChange={handleChange} name="isCompany" />}
-                    label="Register a Company?"/><br></br>
                 <Button 
                     type="submit"
                     variant="contained" 

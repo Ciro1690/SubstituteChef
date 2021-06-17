@@ -23,7 +23,7 @@ router.get("/", async function (req, res, next) {
  * 
  * GET /users/username => { user }
  * 
- * Returns { username, firstName, lastName, email, isCompany }
+ * Returns { username, firstName, lastName, email }
  * 
  * Authorization required: same user
  */
@@ -42,9 +42,9 @@ router.get('/:username', async (req, res, next) => {
  * 
  * PATCH /users/username => { user }
  * 
- * Data can include { username, firstName, lastName, email, isCompany}
+ * Data can include { username, firstName, lastName, email}
  * 
- * Returns { username, firstName, lastName, email, isCompany }
+ * Returns { username, firstName, lastName, email }
  * 
  */
 

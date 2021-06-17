@@ -65,7 +65,6 @@ const Routes = () => {
                     setUserInfo(user)
                 }
                 catch (e) {
-                    console.log(e)
                     setCurrentUser(null)
                 }
             }

@@ -11,7 +11,7 @@ const JobCard = ({ job }) => {
         const handleClick = async () => {
             const userInfo = await ChefApi.getUserInfo(currentUser)
             const applications = userInfo.applications
-        const newJobId = await ChefApi.applyToJob(currentUser, job.id)
+            const newJobId = await ChefApi.applyToJob(currentUser, job.id)
         if (!applications.includes(newJobId)) {
             setApplied(true)
             alert(`Applied to ${job.position}`)
@@ -21,7 +21,7 @@ const JobCard = ({ job }) => {
     useEffect(() => {
         async function getApplications() {
             const userInfo = await ChefApi.getUserInfo(currentUser)
-            if (userInfo.applications[0].includes(job.id)) {
+            if (userInfo.applications.length > 0 && userInfo.applications[0].includes(job.id)) {
                 setApplied(true)
             }
         }

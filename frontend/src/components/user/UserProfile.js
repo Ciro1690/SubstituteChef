@@ -3,8 +3,6 @@ import { editUser } from '../utilities/utility';
 import UserContext from '../routes/UserContext';
 import {
     TextField,
-    Checkbox,
-    FormControlLabel,
     Button
 } from '@material-ui/core';
 
@@ -20,8 +18,7 @@ const UserProfile = ({ setUserInfo }) => {
             setFormData({
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
-                email: userInfo.email,
-                isCompany: userInfo.isCompany
+                email: userInfo.email
             });
         }
     }, [userInfo])
@@ -31,18 +28,15 @@ const UserProfile = ({ setUserInfo }) => {
     const editData = {
         "firstName": formData.firstName,
         "lastName": formData.lastName,
-        "email": formData.email,
-        "isCompany": formData.isCompany            
+        "email": formData.email
     };
     await editUser(userInfo.username, editData)
         .then((res) => {
             if (res.success) {
-                console.log('res', res)
                 const NEW_STATE = {
                     "firstName": res.user.firstName,
                     "lastName": res.user.lastName,
-                    "email": res.user.email,
-                    "isCompany": res.user.isCompany
+                    "email": res.user.email
                 }
                 setUserInfo(data => ({
                     ...data,
@@ -92,11 +86,7 @@ const UserProfile = ({ setUserInfo }) => {
                         name="email"
                         onChange={handleChange}
                         value={formData.email}/>
-                        <br></br>
-                    <FormControlLabel
-                        control={<Checkbox value={formData.isCompany} checked={formData.isCompany} onChange={handleChange} name="isCompany" />}
-                        label="Register a Company?"/>
-                        <br></br>
+                        <br></br><br></br>
                     <Button 
                         type="submit"
                         variant="contained" 

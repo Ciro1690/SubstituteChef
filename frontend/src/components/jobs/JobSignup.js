@@ -43,9 +43,7 @@ const JobSignUp = ({ currentUser }) => {
             "date": formData.date,
             "companyId": formData.companyId         
         };
-        console.log(registerData)
         const result = await registerJob(registerData)
-        console.log(result)
         setFormData(INITIAL_DATA);
         
         if (result.success) {
@@ -57,7 +55,6 @@ const JobSignUp = ({ currentUser }) => {
     }
     const handleChange = e => {
         const {name, value} = e.target;
-        console.log(name, value)
         setFormData(data => ({
             ...data,
             [name]: value

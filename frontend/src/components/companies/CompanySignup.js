@@ -20,7 +20,6 @@ const CompanySignup = ({ currentUser }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log("submit")
         const registerData = {
             "name": formData.name,
             "url":formData.url,

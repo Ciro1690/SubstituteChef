@@ -20,8 +20,6 @@ function ensureLoggedIn(req, res, next) {
 }
 
 function ensureCorrectUser(req, res, next) {
-    console.log(req.user.username)
-    console.log(req.params.username)
     try {
         if (req.user.username === req.params.username) {
             return next();

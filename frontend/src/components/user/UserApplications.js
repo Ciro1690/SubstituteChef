@@ -16,7 +16,6 @@ const UserApplications = ({currentUser}) => {
                         let company = await ChefApi.getCompany(job.company_id)
                         jobApps.push({ job, status, company });
                     }
-                    console.log(jobApps)
                     setApplications(jobApps)
                     setIsLoaded(true);
 

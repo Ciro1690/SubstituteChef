@@ -8,7 +8,7 @@ const CompanyCard = ({ company, setClickedCompany, clickedCompany }) => {
     const currentUser = useContext(UserContext);
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { id, name, url, address } = company;
+    const { id, name, url, address, lat, lng } = company;
 
     useEffect(() => {
         async function getJobs() {
@@ -20,6 +20,8 @@ const CompanyCard = ({ company, setClickedCompany, clickedCompany }) => {
         }
         getJobs();
     }, [id]);
+
+    const directions = `https://www.google.com/maps/dir/?api=1&travelmode=driving&layer=traffic&destination=${lat},${lng}`
 
     const setCompany = () => {
         setClickedCompany(company)
@@ -36,6 +38,7 @@ const CompanyCard = ({ company, setClickedCompany, clickedCompany }) => {
                     <h1>{name}</h1>
                     <h4>{address}</h4>
                     <h5><a href={url} target="blank">{url}</a></h5>
+                    <h5><a href={directions} rel="noreferrer" target="_blank">Get Directions</a></h5>
                 </div>
                 {currentUser.currentUser == null ? null 
                 :

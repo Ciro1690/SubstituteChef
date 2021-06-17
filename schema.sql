@@ -1,4 +1,4 @@
--- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- Link to schema: https://app.quickdatabasediagrams.com/#/d/Z4QMwY
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
@@ -9,7 +9,6 @@ CREATE TABLE "User" (
     "firstName" string   NOT NULL,
     "lastName" string   NOT NULL,
     "email" string   NOT NULL,
-    "isCompany" boolean  DEFAULT false NOT NULL,
     CONSTRAINT "pk_User" PRIMARY KEY (
         "username"
      )
@@ -20,6 +19,8 @@ CREATE TABLE "Company" (
     "name" string   NOT NULL,
     "url" string   NOT NULL,
     "address" string   NOT NULL,
+    "lat" float,   NOT NULL,
+    "lng," float,   NOT NULL,
     "username" string   NOT NULL,
     CONSTRAINT "pk_Company" PRIMARY KEY (
         "id"
@@ -38,12 +39,9 @@ CREATE TABLE "Job" (
 );
 
 CREATE TABLE "Application" (
-    "ProductID" int   NOT NULL,
+    "status" string  DEFAULT pending NOT NULL,
     "username" string   NOT NULL,
-    "jobId" int   NOT NULL,
-    CONSTRAINT "pk_Application" PRIMARY KEY (
-        "ProductID"
-     )
+    "jobId" int   NOT NULL
 );
 
 ALTER TABLE "Company" ADD CONSTRAINT "fk_Company_username" FOREIGN KEY("username")

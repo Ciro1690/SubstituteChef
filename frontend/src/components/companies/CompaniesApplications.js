@@ -16,7 +16,6 @@ const CompaniesApplications = ({currentUser}) => {
                 applicationsArr.push([company, companyApplications])
             }
             setCompanies(applicationsArr);
-            console.log(companies)
             setIsLoading(false); 
         }
         if (isLoading && currentUser !== null) {
@@ -48,7 +47,7 @@ const CompaniesApplications = ({currentUser}) => {
                         <br></br>
                         {company[1].length > 0 ?
                         company[1].map(application => (
-                            <div key={application.id}><b>Open Applications</b>   
+                            <div key={application.id}><b>Open Positions</b>   
                                 <p>Position: {application.position.toUpperCase()}</p>
                                 <p>Hourly Pay: {application.hourly_pay}</p>
                                 <p>Date: {formatDate(application.date)}</p>

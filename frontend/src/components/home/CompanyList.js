@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import CompanyCard from './CompanyCard';
 import ChefApi from '../api/api';
 import Map from './Map';
+import { Grid } from '@material-ui/core';
+import '../../styles/CompanyCard.css';
 
 const CompanyList = () => {
 
@@ -20,8 +22,9 @@ const CompanyList = () => {
 
     return (
         <div className="container-fluid">
-            <div className="row">
-                <div className="company-list col">
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <div className="company-list">
                     {!isLoaded ? <div>Loading...</div> : null}
                     {companies.map(company => (
                         <CompanyCard
@@ -32,13 +35,15 @@ const CompanyList = () => {
                         />
                     ))} 
                 </div>
-                <div className="col">
+                </Grid>
+                <Grid item xs={12} md={6}>
                     <Map 
                         companies={companies}
                         clickedCompany={clickedCompany}
+                        setClickedCompany={setClickedCompany}
                     />
-                </div>
-            </div>
+                </Grid>
+            </Grid>
         </div>
     )
 }

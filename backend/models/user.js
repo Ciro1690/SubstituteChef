@@ -9,8 +9,7 @@ class User {
             `SELECT username,
             first_name AS "firstName",
             last_name AS "lastName",
-            email,
-            is_company AS "isCompany"
+            email
             FROM users
             WHERE username = $1`,
             [username]
@@ -36,8 +35,7 @@ class User {
           `SELECT username,
                   first_name AS "firstName",
                   last_name AS "lastName",
-                  email,
-                  is_company AS "isCompany"
+                  email
            FROM users
            ORDER BY username`,
     );
@@ -51,8 +49,7 @@ class User {
                 password,
                 first_name AS firstName,
                 last_name AS lastName,
-                email,
-                is_company AS "isCompany"
+                email
             FROM users
             WHERE username = $1`,
             [username],
@@ -72,7 +69,7 @@ class User {
     }
 
     static async register(
-        {username, password, firstName, lastName, email, isCompany}) {
+        {username, password, firstName, lastName, email}) {
             const duplicateCheck = await db.query(
                 `SELECT username
                 FROM users
@@ -92,17 +89,15 @@ class User {
                     password,
                     first_name,
                     last_name,
-                    email,
-                    is_company)
-                VALUES ($1, $2, $3, $4, $5, $6)
-                RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_company AS "isCompany"`,
+                    email)
+                VALUES ($1, $2, $3, $4, $5)
+                RETURNING username, first_name AS "firstName", last_name AS "lastName", email`,
                 [
                 username,
                 hashedPassword,
                 firstName,
                 lastName,
-                email,
-                isCompany
+                email
                 ]                
             )
             return result.rows[0];
@@ -113,15 +108,13 @@ class User {
                 `UPDATE users
                  SET first_name=$1,
                     last_name=$2,
-                    email=$3,
-                    is_company=$4
-                 WHERE username = $5
-                 RETURNING first_name AS "firstName", last_name AS "lastName", email, is_company AS "isCompany"`,
+                    email=$3
+                 WHERE username = $4
+                 RETURNING first_name AS "firstName", last_name AS "lastName", email`,
                 [
                 data.firstName,
                 data.lastName,
                 data.email,
-                data.isCompany,
                 username
                 ]                
             )

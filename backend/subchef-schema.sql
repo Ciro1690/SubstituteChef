@@ -4,8 +4,7 @@ CREATE TABLE users (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT NOT NULL
-    CHECK (position('@' IN email) > 1),
-  is_company BOOLEAN NOT NULL DEFAULT FALSE
+    CHECK (position('@' IN email) > 1)
 );
 
 CREATE TABLE companies (

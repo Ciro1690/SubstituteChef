@@ -12,9 +12,9 @@ const { BadRequestError } = require("../expressError");
  * 
  * POST /auth/signup => { user, token }
  * 
- * Data can include { username, password, firstName, lastName, email, isCompany }
+ * Data can include { username, password, firstName, lastName, email }
  * 
- * Returns { user: username, firstName, lastName, email, isCompany, token }
+ * Returns { user: username, firstName, lastName, email, token }
  * 
  */
 

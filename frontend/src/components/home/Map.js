@@ -2,7 +2,7 @@ import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 require('dotenv').config()
 
-const Map = ({ companies, clickedCompany }) => {
+const Map = ({ companies, clickedCompany, setClickedCompany }) => {
 
     const location = {lat: 32.74544, lng: -117.14369}
     const mapStyles = {
@@ -24,7 +24,6 @@ const Map = ({ companies, clickedCompany }) => {
                     position={{lat: company.lat, lng: company.lng}}
                     labelInBackground={true}
                     label={clickedCompany.id === company.id ? company.name : null}
-                    icon={clickedCompany.id === company.id ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : null}
                 />
                 ))
             })
