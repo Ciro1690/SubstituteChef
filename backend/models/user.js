@@ -57,15 +57,13 @@ class User {
 
         const user = result.rows[0];
 
-        if (user) {
-            const isValid = await bcrypt.compare(password, user.password);
-            if (isValid === true) {
-                delete user.password;
-                return user;
-            }
+        if (!user) throw new UnauthorizedError("Invalid username/password", 401);
+        
+        const isValid = await bcrypt.compare(password, user.password);
+        if (isValid === true) {
+            delete user.password;
+            return user;
         }
-
-        throw new UnauthorizedError("Invalid username/password");
     }
 
     static async register(
@@ -104,7 +102,7 @@ class User {
         }
 
     static async update(username, data) {
-        if (Object.keys(data).length === 0) throw new BadRequestError("No Data")
+        if (Object.keys(data).length === 0) throw new BadRequestError("No Data", 400)
         const result = await db.query(
             `UPDATE users
                 SET first_name=$1,

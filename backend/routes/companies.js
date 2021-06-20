@@ -108,6 +108,7 @@ router.delete('/:id', async (req, res, next) => {
         return res.json({ deleted: req.params.id })
     }
     catch (err) {
+        console.log(err)
         return next(err);
     }
 });

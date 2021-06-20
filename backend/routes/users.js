@@ -54,6 +54,7 @@ router.patch('/:username', async (req, res, next) => {
         return res.json({ user })
     }
     catch (err) {
+        console.log(err)
         return next(err);
     }
 });

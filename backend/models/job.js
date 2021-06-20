@@ -4,6 +4,14 @@ const { NotFoundError, BadRequestError } = require("../expressError");
 class Job {
 
     static async create({position, hourlyPay, date, companyId}) {
+    const companyCheck = await db.query(
+            `SELECT name
+            FROM companies
+            WHERE id = $1`,
+            [companyId]);
+
+        if (!companyCheck.rows[0]) throw new BadRequestError(`No company: ${companyId}`);
+
             const result = await db.query(
                 `INSERT INTO jobs
                     (position,
@@ -19,6 +27,8 @@ class Job {
                 companyId
                 ]                
             )
+            
+            if (!result.rows[0]) throw new NotFoundError(`No job found`, 400)
             return result.rows[0];
         }
 

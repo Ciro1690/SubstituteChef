@@ -124,7 +124,7 @@ describe("update", function () {
                FROM companies
                WHERE name = 'Saiko Sushi Coronado'`);
 
-    let company = await Company.update(saiko.rows[0].id, updateData);
+    await Company.update(saiko.rows[0].id, updateData);
     const result = await db.query(
           `SELECT name, url, address
            FROM companies

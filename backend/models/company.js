@@ -55,6 +55,14 @@ class Company {
         }
 
     static async get(username) {
+        const usernameCheck = await db.query(
+            `SELECT username
+            FROM users
+            WHERE username = $1`, [username]);
+        const user = usernameCheck.rows[0];
+
+        if (!user) throw new NotFoundError(`No username: ${username}`);
+
         const result = await db.query(
             `SELECT 
             id,
