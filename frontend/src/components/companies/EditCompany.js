@@ -3,12 +3,15 @@ import {
     TextField,
     Button
 } from '@material-ui/core';
+import ChefApi from '../api/api';
+import { useHistory } from 'react-router';
 import { editCompany } from '../utilities/utility';
 
 const EditCompany = ({ company }) => {
     const { id, name, address, url } = company
     const [formData, setFormData] = useState(null);
     const [errors, setErrors] = useState([]);
+    let history = useHistory();
     
     useEffect(() => {
         if (company !== null) {
@@ -56,6 +59,19 @@ const EditCompany = ({ company }) => {
         }))
     }
 
+    const deleteCompany = async () => {
+        try {
+            const company = await ChefApi.deleteCompany(id)
+            console.log(company)
+            alert(`Deleted company. Sorry to see you go!`)
+            history.push('/')
+        }
+        catch (err) {
+            console.log(err)
+            setErrors(`Unable to delete company`)
+        }
+    }
+
     return (
         <div className="col">
         {formData === null  ? <p>Loading...</p> :
@@ -86,12 +102,22 @@ const EditCompany = ({ company }) => {
                     <Button 
                         type="submit"
                         variant="contained" 
-                        color="primary">Edit Company</Button>                    <div>
-                        {errors.length ?
-                            <p>{errors}</p>
-                            : null }
-                    </div>
+                        color="secondary">
+                        Edit Company
+                    </Button>                    
                 </form>
+                <br></br>
+                <Button 
+                    onClick={deleteCompany}
+                    variant="contained" 
+                    color="primary">
+                    Delete Company
+                </Button>
+                <div>
+                    {errors.length ?
+                        <p>{errors}</p>
+                        : null }
+                </div>
             </div>
         }
         </div>

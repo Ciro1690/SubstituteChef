@@ -1,17 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { editUser } from '../utilities/utility';
 import UserContext from '../routes/UserContext';
+import ChefApi from '../api/api';
+import { useHistory } from 'react-router';
 import {
     TextField,
     Button
 } from '@material-ui/core';
 
-const UserProfile = ({ setUserInfo }) => {
+const UserProfile = ({ setUserInfo, LogOut }) => {
 
     const { userInfo } = useContext(UserContext);
-
     const [formData, setFormData] = useState(null);
     const [errors, setErrors] = useState([]);
+    let history = useHistory();
     
     useEffect(() => {
         if (userInfo !== null) {
@@ -48,6 +50,20 @@ const UserProfile = ({ setUserInfo }) => {
                 setErrors(res.errors);
             }
         })
+    }
+
+    const deleteUser = async () => {
+        try {
+            const user = await ChefApi.deleteUser(userInfo.username)
+            console.log(user)
+            alert(`Deleted ${user.deleted}. Sorry to see you go!`)
+            LogOut()
+            history.push('/')
+        }
+        catch (err) {
+            console.log(err)
+            setErrors(`Unable to delete ${userInfo.username}`)
+        }
     }
 
     const handleChange = e => {
@@ -87,16 +103,22 @@ const UserProfile = ({ setUserInfo }) => {
                         onChange={handleChange}
                         value={formData.email}/>
                         <br></br><br></br>
+                    <div>
+                        {errors.length ?
+                            <p>{errors}</p>
+                            : null }
+                    </div>
                     <Button 
                         type="submit"
                         variant="contained" 
-                        color="primary">Edit User</Button>
-                        <div>
-                            {errors.length ?
-                                <p>{errors}</p>
-                                : null }
-                        </div>
+                        color="secondary">Edit User</Button>
                 </form>
+                <br></br>
+                <Button 
+                    onClick={deleteUser}
+                    variant="contained" 
+                    color="primary">Delete User
+                </Button>
             </div>
         }
         </div>

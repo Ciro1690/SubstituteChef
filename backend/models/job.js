@@ -1,5 +1,5 @@
 const db = require("../db");
-const { NotFoundError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 
 class Job {
 
@@ -103,6 +103,7 @@ class Job {
     }
 
     static async update(id, data) {
+        if (Object.keys(data).length === 0) throw new BadRequestError("No Data");
             const result = await db.query(
                 `UPDATE jobs
                  SET position = $1,
@@ -117,7 +118,9 @@ class Job {
                 id
                 ]                
             )
-            return result.rows[0];
+            const job = result.rows[0];
+            if (!job) throw new NotFoundError('Job not found', 400)
+            return job;
         }
 
         static async remove(id) {

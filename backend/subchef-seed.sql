@@ -31,15 +31,15 @@ VALUES ('Saiko Sushi Coronado',
         );
 
 INSERT INTO jobs (position, hourly_pay, date, company_id)
-VALUES ('prep cook',
+VALUES ('Prep Cook',
         14,
         '2021-06-22',
         1),
-        ('dishwasher',
+        ('Dishwasher',
         14,
         '2021-06-22',
         1),
-        ('line cook',
+        ('Line Cook',
         16,
         '2021-06-22',
         2);

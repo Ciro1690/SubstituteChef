@@ -51,7 +51,7 @@ class ChefApi {
     }
 
     static async deleteUser(username) {
-        let res = await this.request(`users/${username}`, "delete");
+        let res = await this.request(`users/${username}`, {}, "delete");
         return res;
     }
 
@@ -85,7 +85,7 @@ class ChefApi {
     }
 
     static async deleteCompany(id) {
-        let res = await this.request(`companies/${id}`, "delete");
+        let res = await this.request(`companies/${id}`, {}, "delete");
         return res;
     }
 
@@ -119,7 +119,7 @@ class ChefApi {
     }
 
     static async deleteJob(id) {
-        let res = await this.request(`jobs/${id}`, "delete");
+        let res = await this.request(`jobs/${id}`, {}, "delete");
         return res;
     }
 

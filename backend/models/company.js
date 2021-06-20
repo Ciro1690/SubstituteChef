@@ -1,47 +1,57 @@
 const db = require("../db");
 const axios = require('axios');
-const { NotFoundError } = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 require('dotenv').config()
 
 class Company {
 
     static async register({name, url, address, username}) {
+    const duplicateCheck = await db.query(
+            `SELECT name
+            FROM companies
+            WHERE name = $1`,
+            [name]);
+
+        if (duplicateCheck.rows[0])
+            throw new BadRequestError(`Duplicate company: ${name}`);
+
         let coordinates = [];
-            await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        const coords = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                     params:{
                         address: address,
                         key: process.env.REACT_APP_API_KEY
                     }
                 })
-                    .then(function(response){
-                        const location = response.data.results[0].geometry.location
-                        coordinates.push(location.lat)
-                        coordinates.push(location.lng)
-                    })
-                    .catch(function(error) {
-                        console.log(error)
-                    }) 
+                    const location = coords.data.results[0].geometry.location
+                    coordinates.push(location.lat)
+                    coordinates.push(location.lng)
 
-            const result = await db.query(
-                `INSERT INTO companies
-                    (name,
+                    const result = await db.query(
+                    `INSERT INTO companies
+                        (name,
+                        url,
+                        address,
+                        lat,
+                        lng,
+                        username)
+                    VALUES ($1, $2, $3, $4, $5, $6)
+                    RETURNING id, name, url, address, lat, lng, username`,
+                    [
+                    name,
                     url,
                     address,
-                    lat,
-                    lng,
-                    username)
-                VALUES ($1, $2, $3, $4, $5, $6)
-                RETURNING id, name, url, address, lat, lng, username`,
-                [
-                name,
-                url,
-                address,
-                coordinates[0],
-                coordinates[1],
-                username
-                ]                
-            )
-            return result.rows[0];
+                    coordinates[0],
+                    coordinates[1],
+                    username
+                    ]                
+                )
+
+                let company = result.rows
+                if (!company) {
+                    throw new NotFoundError(`No username ${username}`, 400)
+                }
+                return company;
+                    
         }
 
     static async get(username) {
@@ -105,6 +115,7 @@ class Company {
     }
 
     static async update(id, data) {
+        if (Object.keys(data).length === 0) throw new BadRequestError("No Data");
             const result = await db.query(
                 `UPDATE companies
                  SET name=$1,
@@ -118,9 +129,12 @@ class Company {
                 data.address,
                 id
                 ]                
-            )
-            return result.rows[0];
-        }
+            );
+            const company = result.rows[0];
+            
+            if (!company) throw new NotFoundError(`No id ${id}`);
+            return company;
+    }
 
         static async remove(id) {
             const result = await db.query(

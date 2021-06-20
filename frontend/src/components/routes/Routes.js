@@ -15,6 +15,7 @@ import CompaniesApplications from '../companies/CompaniesApplications';
 import UserApplications from '../user/UserApplications';
 import JobSignup from '../jobs/JobSignup';
 import ChefApi from '../api/api';
+import Footer from '../footer/Footer';
 import jwt from 'jsonwebtoken';
 
 const Routes = () => {
@@ -95,7 +96,7 @@ const Routes = () => {
                         <User/>
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/userprofile">
-                        <UserProfile setUserInfo={setUserInfo}/>
+                        <UserProfile setUserInfo={setUserInfo} LogOut={LogOut}/>
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/companyprofile">
                         <CompaniesProfile currentUser={currentUser}/>
@@ -113,6 +114,7 @@ const Routes = () => {
                         <p>I can't seem to find what you want</p>
                     </Route>
                 </Switch>
+                <Footer/>
             </UserContext.Provider>
         </BrowserRouter>
     )

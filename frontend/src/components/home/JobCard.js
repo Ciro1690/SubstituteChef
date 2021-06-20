@@ -30,14 +30,14 @@ const JobCard = ({ job }) => {
     
 
     return (
-        <div className="col text-center">
-            <p>Position: {job.position.toUpperCase()}</p>
+        <div className="col-4 text-center">
+            <p>Position: {job.position}</p>
             <p>Hourly pay: ${job.hourly_pay}</p>
             <p>Date: {formatDate(job.date)}</p>
             {applied ?
-            <Button variant="contained" color="secondary">Applied</Button>
+            <Button variant="contained" color="primary">Applied</Button>
             :
-            <Button onClick={handleClick} variant="contained" color="primary">Apply</Button>
+            <Button onClick={handleClick} variant="contained" color="secondary">Apply</Button>
             }
         </div> 
     )

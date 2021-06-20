@@ -10,6 +10,10 @@ const Map = ({ companies, clickedCompany, setClickedCompany }) => {
         width: "100%"
     }
 
+    const handleClick = (company) => {
+        setClickedCompany(company)
+    }
+
     return (
             <LoadScript
                 googleMapsApiKey= {process.env.REACT_APP_API_KEY}>
@@ -24,6 +28,7 @@ const Map = ({ companies, clickedCompany, setClickedCompany }) => {
                     position={{lat: company.lat, lng: company.lng}}
                     labelInBackground={true}
                     label={clickedCompany.id === company.id ? company.name : null}
+                    onClick={() => handleClick(company)}
                 />
                 ))
             })

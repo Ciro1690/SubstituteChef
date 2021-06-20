@@ -102,10 +102,10 @@ router.patch('/:id', async (req, res, next) => {
  * Authorization required: same user
  */
 
-router.delete('/:username', async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
     try {
-        await User.remove(req.params.username)
-        return res.json({ deleted: req.params.username })
+        await Company.remove(req.params.id)
+        return res.json({ deleted: req.params.id })
     }
     catch (err) {
         return next(err);

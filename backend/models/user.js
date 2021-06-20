@@ -104,20 +104,22 @@ class User {
         }
 
     static async update(username, data) {
-            const result = await db.query(
-                `UPDATE users
-                 SET first_name=$1,
-                    last_name=$2,
-                    email=$3
-                 WHERE username = $4
-                 RETURNING first_name AS "firstName", last_name AS "lastName", email`,
-                [
-                data.firstName,
-                data.lastName,
-                data.email,
-                username
-                ]                
-            )
+        if (Object.keys(data).length === 0) throw new BadRequestError("No Data")
+        const result = await db.query(
+            `UPDATE users
+                SET first_name=$1,
+                last_name=$2,
+                email=$3
+                WHERE username = $4
+                RETURNING first_name AS "firstName", last_name AS "lastName", email`,
+            [
+            data.firstName,
+            data.lastName,
+            data.email,
+            username
+            ]                
+        )
+            if (!result.rows[0]) throw new NotFoundError("User not found", 400)
             return result.rows[0];
         }
 

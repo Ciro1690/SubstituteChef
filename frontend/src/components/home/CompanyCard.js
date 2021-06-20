@@ -34,7 +34,7 @@ const CompanyCard = ({ company, setClickedCompany, clickedCompany }) => {
     return (
         <div className="company-card container">
             <div onClick={setCompany} className={clickedCompany.name === name ? "selected-card row" : "inner-card row"}>
-                <div className="company-info col">
+                <div className="company-info text-center col">
                     <h1>{name}</h1>
                     <h4>{address}</h4>
                     <h5><a href={url} target="blank">{url}</a></h5>
