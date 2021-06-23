@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const companyRoutes = require("./routes/companies");
 const jobRoutes = require("./routes/jobs");
+const path = require('path');
 
 const app = express();
 
@@ -17,6 +18,14 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/companies", companyRoutes);
 app.use("/jobs", jobRoutes);
+
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use(function(req, res, next) {
     return next(new NotFoundError());
