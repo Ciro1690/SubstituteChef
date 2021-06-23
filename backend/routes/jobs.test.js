@@ -173,7 +173,6 @@ describe("PATCH /jobs/:id", function () {
     const resp = await request(app)
         .patch(`/jobs/${prep.rows[0].id}`)
         .send(updateData)
-    console.log(resp)
     expect(resp.statusCode).toEqual(500);
   });
 });

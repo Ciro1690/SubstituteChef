@@ -8,6 +8,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  testuserToken,
 } = require("../models/_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -135,6 +136,7 @@ describe("PATCH /companies/:id", function () {
     const resp = await request(app)
         .patch(`/companies/${saiko.rows[0].id}`)
         .send(updateData)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.body).toEqual({
         company: {
             name: 'New Name',
@@ -155,7 +157,8 @@ describe("PATCH /companies/:id", function () {
     const resp = await request(app)
         .patch(`/companies/100`)
         .send(updateData)
-    expect(resp.statusCode).toEqual(404);
+        .set("authorization", `Bearer ${testuserToken}`);
+    expect(resp.statusCode).toEqual(401);
   });
 
 
@@ -169,6 +172,7 @@ describe("PATCH /companies/:id", function () {
         .send({
             name: "New Name",
         })
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(500);
   });
 });
@@ -183,12 +187,14 @@ describe("DELETE /companies/:id", function () {
                WHERE name = 'Saiko Sushi Coronado'`);
     const resp = await request(app)
         .delete(`/companies/${saiko.rows[0].id}`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.body).toEqual({ deleted: `${saiko.rows[0].id }`});
   });
 
   test("not found for no such company", async function () {
     const resp = await request(app)
         .delete(`/companies/400`)
-    expect(resp.statusCode).toEqual(404);
+        .set("authorization", `Bearer ${testuserToken}`);
+    expect(resp.statusCode).toEqual(401);
   });
 });

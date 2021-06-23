@@ -92,11 +92,11 @@ const UserSignup = ({ registerUser }) => {
                     name="email"
                     onChange={handleChange}
                     value={formData.email}/>
-                    <br></br>
+                    <br></br><br></br>
                 <Button 
                     type="submit"
                     variant="contained" 
-                    color="primary">Login</Button>
+                    color="primary">Sign Up</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>

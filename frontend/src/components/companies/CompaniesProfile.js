@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ChefApi from '../api/api';
 import EditCompany from './EditCompany';
-import { Button } from '@material-ui/core';
 
 const CompaniesProfile = ({ currentUser }) => {
     const [companies, setCompanies] = useState(null);
@@ -20,8 +19,7 @@ const CompaniesProfile = ({ currentUser }) => {
     
     return (
         isLoading ? <div>Loading...</div> :
-        <div className="container">
-            <a href="/companiesapplications"><Button>View Applications</Button></a>
+        <div className="container mt-3">
             <h1>Edit Companies</h1>
             <div className="row">
                 {companies.map(company => (

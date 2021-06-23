@@ -67,6 +67,19 @@ const JobSignUp = ({ currentUser }) => {
             <h1>Post a Job</h1>
             {!isLoaded ? <div>Loading...</div> : null}
             <form onSubmit={handleSubmit}>
+                <InputLabel>Company</InputLabel>
+                <Select
+                    required
+                    displayEmpty
+                    label="Company"
+                    name="companyId" 
+                    value={formData.companyId} 
+                    onChange={handleChange}>
+                    {companies.map(company => (
+                        <MenuItem value={company.id} key={company.id}>{company.name}</MenuItem>
+                    ))}
+                </Select>
+                <br></br>
                 <TextField
                     required
                     label="Position"
@@ -93,24 +106,13 @@ const JobSignUp = ({ currentUser }) => {
                     value={formData.date}
                     InputLabelProps={{
                         shrink: true,
-                    }}/>
-                    <br></br>
-                <InputLabel>Company</InputLabel>
-                <Select
-                    required
-                    displayEmpty
-                    label="Company"
-                    name="companyId" 
-                    value={formData.companyId} 
-                    onChange={handleChange}>
-                    {companies.map(company => (
-                        <MenuItem value={company.id} key={company.id}>{company.name}</MenuItem>
-                    ))}
-                    </Select><br></br>
+                }}/>
+                <br></br><br></br>
                 <Button 
                     type="submit"
                     variant="contained" 
-                    color="primary">Post Job</Button>
+                    color="secondary"
+                >Post Job</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>

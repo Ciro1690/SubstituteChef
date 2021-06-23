@@ -30,10 +30,10 @@ const JobCard = ({ job }) => {
     
 
     return (
-        <div className="col-4 text-center">
-            <p>Position: {job.position}</p>
-            <p>Hourly pay: ${job.hourly_pay}</p>
-            <p>Date: {formatDate(job.date)}</p>
+        <div className="col text-center">
+            <h4>{job.position}</h4>
+            <h4>${job.hourly_pay}/hour</h4>
+            <h4>{formatDate(job.date)}</h4>
             {applied ?
             <Button variant="contained" color="primary">Applied</Button>
             :

@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
-
+const { ensureCorrectUser } = require('../middleware/auth');
 const router = express.Router();
 
 /**
@@ -48,7 +48,7 @@ router.get('/:username', async (req, res, next) => {
  * 
  */
 
-router.patch('/:username', async (req, res, next) => {
+router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
     try {
         let user = await User.update(req.params.username, req.body)
         return res.json({ user })
@@ -66,7 +66,7 @@ router.patch('/:username', async (req, res, next) => {
  * Authorization required: same user
  */
 
-router.delete('/:username', async (req, res, next) => {
+router.delete('/:username', ensureCorrectUser, async (req, res, next) => {
     try {
         await User.remove(req.params.username)
         return res.json({ deleted: req.params.username })
@@ -83,7 +83,7 @@ router.delete('/:username', async (req, res, next) => {
  * Returns {"applied": jobId}
  */
 
-router.post('/:username/jobs/:id', async (req, res, next) => {
+router.post('/:username/jobs/:id', ensureCorrectUser, async (req, res, next) => {
     try {
         const jobId = +req.params.id;
         await User.applyToJob(req.params.username, jobId)
@@ -94,7 +94,7 @@ router.post('/:username/jobs/:id', async (req, res, next) => {
     }
 });
 
-router.patch('/:username/jobs/:id', async (req, res, next) => {
+router.patch('/:username/jobs/:id', ensureCorrectUser, async (req, res, next) => {
     try {
         const jobId = +req.params.id;
         const status = req.body.status;

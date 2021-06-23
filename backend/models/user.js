@@ -2,6 +2,7 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const { NotFoundError, UnauthorizedError, BadRequestError } = require("../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../config");
+const { sendEmail } = require('../helpers/email.js');
 
 class User {
     static async get(username) {
@@ -137,42 +138,62 @@ class User {
 
     static async applyToJob(username, jobId) {
         const jobCheck = await db.query(
-            `SELECT id
+            `SELECT id, position, company_id
             FROM jobs
             WHERE id = $1`, [jobId]);
         const job = jobCheck.rows[0];
-
+        
         if (!job) throw new NotFoundError(`No job: ${jobId}`);
         
-        const usernameCheck = await db.query(
-            `SELECT username
+        const companyEmail = await db.query(
+            `SELECT name, email
             FROM users
-            WHERE username = $1`, [username]);
-        const user = usernameCheck.rows[0];
+            JOIN companies
+            ON companies.username = users.username
+            WHERE companies.id = $1`, [job.company_id]);
+            
+            const company = companyEmail.rows[0];
+            
+            const usernameCheck = await db.query(
+                `SELECT username, email
+                FROM users
+                WHERE username = $1`, [username]);
+                const user = usernameCheck.rows[0];
+                
+                if (!user) throw new NotFoundError(`No username: ${username}`);
+                
+                await db.query(
+                    `INSERT INTO applications (status, username, job_id)
+                    VALUES ($1, $2, $3)`,
+                    ['PENDING', username, jobId]);
 
-        if (!user) throw new NotFoundError(`No username: ${username}`);
-          
-        await db.query(
-            `INSERT INTO applications (status, username, job_id)
-            VALUES ($1, $2, $3)`,
-            ['PENDING', username, jobId]);
+                sendEmail(company.email, user.email, `${username} has applied to ${job.position} at ${company.name}.`)
     }
-
+                
     static async updateApplicationStatus(username, jobId, status) {
         const jobCheck = await db.query(
-            `SELECT id
+            `SELECT id, position, company_id
             FROM jobs
             WHERE id = $1`, [jobId]);
         const job = jobCheck.rows[0];
 
         if (!job) throw new NotFoundError(`No job: ${jobId}`);
-        
+
+        const companyEmail = await db.query(
+            `SELECT name, email
+            FROM users
+            JOIN companies
+            ON companies.username = users.username
+            WHERE companies.id = $1`, [job.company_id]);
+            
+        const company = companyEmail.rows[0];
+
         const usernameCheck = await db.query(
-            `SELECT username
+            `SELECT username, email
             FROM users
             WHERE username = $1`, [username]);
-        const user = usernameCheck.rows[0];
-
+            const user = usernameCheck.rows[0];
+            
         if (!user) throw new NotFoundError(`No username: ${username}`);
           
         await db.query(
@@ -181,6 +202,9 @@ class User {
              WHERE username = $2 AND job_id = $3
              RETURNING status`,
             [status, username, jobId]);
+
+        sendEmail(user.email, company.email, `${company.name} has updated your application to ${job.position} to a ${status} status. ${status === "APPROVED" ? "Congratulations!" : "I'm sorry!"} `)
+
     }
 }
 

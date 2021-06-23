@@ -11,6 +11,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  testuserToken,
 } = require("../models/_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -80,6 +81,7 @@ describe("PATCH /users/:username", () => {
           lastName: "Last",
           email: "New@Email.com"
         })
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.body).toEqual({
       user: {
               firstName: "New",
@@ -97,6 +99,7 @@ describe("PATCH /users/:username", () => {
           lastName: "Nope",
           email: "testemail@email.com"
         })
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 
@@ -106,6 +109,7 @@ describe("PATCH /users/:username", () => {
         .send({
           firstName: 42,
         })
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(500);
   });
 });
@@ -116,12 +120,14 @@ describe("DELETE /users/:username", function () {
   test("works for admin", async function () {
     const resp = await request(app)
         .delete(`/users/testuser`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.body).toEqual({ deleted: "testuser" });
   });
 
   test("not found if user missing", async function () {
     const resp = await request(app)
         .delete(`/users/nope`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 });
@@ -136,6 +142,7 @@ describe("POST /users/:username/jobs/:id", function () {
         WHERE position = 'Prep Cook'`);
     const resp = await request(app)
         .post(`/users/test2user2/jobs/${prep.rows[0].id}`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.body).toEqual({ applied: prep.rows[0].id });
   });
 
@@ -146,12 +153,14 @@ describe("POST /users/:username/jobs/:id", function () {
         WHERE position = 'Prep Cook'`);
     const resp = await request(app)
         .post(`/users/nope/jobs/${prep.rows[0].id}`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 
   test("not found for no such job", async function () {
     const resp = await request(app)
         .post(`/users/u1/jobs/0`)
+        .set("authorization", `Bearer ${testuserToken}`);
     expect(resp.statusCode).toEqual(404);
   });
 });

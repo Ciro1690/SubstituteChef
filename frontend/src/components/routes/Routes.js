@@ -1,21 +1,20 @@
 import React, {useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CompanyList from '../home/CompanyList';
-import NavBar2 from '../nav/NavBar2';
+import NavBar from '../nav/NavBar';
 import Login from '../auth/Login';
 import UserSignup from '../auth/UserSignup';
 import CompanySignup from '../companies/CompanySignup';
 import UserContext from "./UserContext";
 import ProtectedRoute from './ProtectedRoute';
-import User from '../user/UserPages';
 import UserProfile from '../user/UserProfile';
 import CompaniesProfile from '../companies/CompaniesProfile';
-import Companies from '../companies/CompaniesPages';
 import CompaniesApplications from '../companies/CompaniesApplications';
 import UserApplications from '../user/UserApplications';
 import JobSignup from '../jobs/JobSignup';
 import ChefApi from '../api/api';
 import Footer from '../footer/Footer';
+import logo from '../../assets/sub chef LOGO/Sub.Chef.LOGO1-01.jpg';
 import jwt from 'jsonwebtoken';
 
 const Routes = () => {
@@ -75,7 +74,8 @@ const Routes = () => {
     return (
         <BrowserRouter>
             <UserContext.Provider value={{ currentUser, token, userInfo, setUserInfo }}>
-                <NavBar2 LogOut={LogOut}/>
+                <NavBar LogOut={LogOut}/>
+                <img className="logo2" src={logo} alt="logo"/><br></br>
                 <Switch>
                     <Route exact path="/">
                         <CompanyList />
@@ -86,15 +86,9 @@ const Routes = () => {
                     <Route exact path="/login">
                         <Login LogIn= {LogIn} />
                     </Route>
-                    <Route exact path="/companies">
-                        <Companies currentUser={currentUser} />
-                    </Route>
                     <Route exact path="/userapplications">
                         <UserApplications currentUser={currentUser} />
                     </Route>
-                    <ProtectedRoute exact path="/User">
-                        <User/>
-                    </ProtectedRoute>
                     <ProtectedRoute exact path="/userprofile">
                         <UserProfile setUserInfo={setUserInfo} LogOut={LogOut}/>
                     </ProtectedRoute>

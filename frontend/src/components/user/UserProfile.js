@@ -5,9 +5,11 @@ import ChefApi from '../api/api';
 import { useHistory } from 'react-router';
 import {
     TextField,
-    Button
-} from '@material-ui/core';
-
+    Button,
+    ButtonGroup } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 const UserProfile = ({ setUserInfo, LogOut }) => {
 
     const { userInfo } = useContext(UserContext);
@@ -55,7 +57,6 @@ const UserProfile = ({ setUserInfo, LogOut }) => {
     const deleteUser = async () => {
         try {
             const user = await ChefApi.deleteUser(userInfo.username)
-            console.log(user)
             alert(`Deleted ${user.deleted}. Sorry to see you go!`)
             LogOut()
             history.push('/')
@@ -76,10 +77,9 @@ const UserProfile = ({ setUserInfo, LogOut }) => {
     }
 
     return (
-        <div>
+        <div className="mt-3">
         {formData === null  ? <p>Loading...</p> :
             <div>
-                <a href="/userapplications"><Button>View Open Applications</Button></a>
                 <h1>Edit User Profile</h1>
                 <form onSubmit={handleSubmit}>
                     <TextField
@@ -102,23 +102,31 @@ const UserProfile = ({ setUserInfo, LogOut }) => {
                         name="email"
                         onChange={handleChange}
                         value={formData.email}/>
-                        <br></br><br></br>
-                    <div>
-                        {errors.length ?
-                            <p>{errors}</p>
-                            : null }
-                    </div>
-                    <Button 
-                        type="submit"
-                        variant="contained" 
-                        color="secondary">Edit User</Button>
+                    <Box m={2} p={3}>
+                        <ButtonGroup size="small" aria-label="small outlined button group">
+                            <Button 
+                                type="submit"
+                                variant="contained" 
+                                color="secondary"
+                                className="btn mr-2"
+                                startIcon={<SaveIcon />}>
+                                Edit Account
+                            </Button>                    
+                            <Button 
+                                onClick={deleteUser}
+                                variant="contained" 
+                                color="primary"
+                                startIcon={<DeleteIcon />}>
+                                Delete Account
+                            </Button>
+                        </ButtonGroup>
+                    </Box>
                 </form>
-                <br></br>
-                <Button 
-                    onClick={deleteUser}
-                    variant="contained" 
-                    color="primary">Delete User
-                </Button>
+                <div>
+                    {errors.length ?
+                        <p>{errors}</p>
+                        : null }
+                </div>
             </div>
         }
         </div>

@@ -5,13 +5,13 @@ VALUES ('testuser',
         '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
         'Test',
         'User',
-        'test@user.com'
+        'Ciro16@gmail.com'
         ),
        ('test2user2',
         '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
         'Test2',
         'User2',
-        'test2@user2.com'
+        'Ciro16@gmail.com'
         );
 
 INSERT INTO companies (name, url, address, lat, lng, username)

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
     TextField,
-    Button
-} from '@material-ui/core';
+    Button,
+    ButtonGroup } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 import ChefApi from '../api/api';
 import { useHistory } from 'react-router';
 import { editCompany } from '../utilities/utility';
@@ -61,8 +64,7 @@ const EditCompany = ({ company }) => {
 
     const deleteCompany = async () => {
         try {
-            const company = await ChefApi.deleteCompany(id)
-            console.log(company)
+            await ChefApi.deleteCompany(id)
             alert(`Deleted company. Sorry to see you go!`)
             history.push('/')
         }
@@ -73,10 +75,10 @@ const EditCompany = ({ company }) => {
     }
 
     return (
-        <div className="col">
+        <div className="col border rounded mt-3">
         {formData === null  ? <p>Loading...</p> :
             <div>
-                <h3>{name}</h3>
+                <h2>{name}</h2>
                 <form onSubmit={handleSubmit}>
                     <TextField
                         label="name"
@@ -98,21 +100,26 @@ const EditCompany = ({ company }) => {
                         name="address"
                         onChange={handleChange}
                         value={formData.address}/>
-                        <br></br><br></br>
-                    <Button 
-                        type="submit"
-                        variant="contained" 
-                        color="secondary">
-                        Edit Company
-                    </Button>                    
+                    <Box m={2} p={3}>
+                        <ButtonGroup size="small" aria-label="small outlined button group">
+                            <Button 
+                                type="submit"
+                                variant="contained" 
+                                color="secondary"
+                                className="btn mr-2"
+                                startIcon={<SaveIcon />}>
+                                Edit Company
+                            </Button>                    
+                            <Button 
+                                onClick={deleteCompany}
+                                variant="contained" 
+                                color="primary"
+                                startIcon={<DeleteIcon />}>
+                                Delete Company
+                            </Button>
+                        </ButtonGroup>
+                    </Box>
                 </form>
-                <br></br>
-                <Button 
-                    onClick={deleteCompany}
-                    variant="contained" 
-                    color="primary">
-                    Delete Company
-                </Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>

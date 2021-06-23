@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { createToken } = require("../helpers/tokens");
 
 const db = require("../db");
 const { BCRYPT_WORK_FACTOR } = require("../config");
@@ -84,6 +85,8 @@ async function commonAfterAll() {
   await db.end();
 }
 
+const testuserToken = createToken({ username: "testuser" });
+
 module.exports = {
   commonBeforeAll,
   commonBeforeEach,
@@ -91,4 +94,5 @@ module.exports = {
   commonAfterAll,
   testJobIds,
   testCompanyIds,
+  testuserToken
 };

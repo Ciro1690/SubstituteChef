@@ -1,5 +1,6 @@
 const express = require("express");
 const Company = require("../models/company");
+const { ensureCorrectCompany } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -85,7 +86,7 @@ router.get('/:id', async (req, res, next) => {
  * 
  */
 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', ensureCorrectCompany, async (req, res, next) => {
     try {
         let company = await Company.update(req.params.id, req.body)
         return res.json({ company })
@@ -102,7 +103,7 @@ router.patch('/:id', async (req, res, next) => {
  * Authorization required: same user
  */
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', ensureCorrectCompany, async (req, res, next) => {
     try {
         await Company.remove(req.params.id)
         return res.json({ deleted: req.params.id })

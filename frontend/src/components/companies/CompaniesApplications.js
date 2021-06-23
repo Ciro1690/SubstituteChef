@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChefApi from '../api/api';
 import { Button } from '@material-ui/core';
 import { formatDate } from '../utilities/utility'; 
+import Application from './Application';
 
 const CompaniesApplications = ({currentUser}) => {
     const [companies, setCompanies] = useState(null);
@@ -21,10 +22,10 @@ const CompaniesApplications = ({currentUser}) => {
             setIsLoading(false);
             setDecided(false);
         }
-        if (!decided && currentUser !== null) {
+        if (isLoading && currentUser !== null) {
             getApplications()
         }
-    }, [companies, currentUser, decided])
+    }, [decided, currentUser, isLoading])
 
 
     const acceptApplicant = ([username, jobId]) => async (e) => {
@@ -41,8 +42,7 @@ const CompaniesApplications = ({currentUser}) => {
 
      const deleteJob = async (id) => {
         try {
-            const job = await ChefApi.deleteJob(id)
-            console.log(job)
+            await ChefApi.deleteJob(id)
             alert(`Deleted job`)
         }
         catch (err) {
@@ -53,52 +53,51 @@ const CompaniesApplications = ({currentUser}) => {
 
     return (
         !isLoading && companies.length > 0 ?
-        <div className="container">
-            <h1>Current Applications</h1>
+        <div className="container mt-3">
+            <h1>Open Applications</h1>
+            <br></br>
             <div className="row applications-ul">
                 {companies.map(company => (
-                    <div className="col" key={company[0].id}>
-                        <h3>{company[0].name}</h3>
-                        <p>{company[0].address}</p>
-                        <p><a href={company[0].url} target="blank">{company[0].url}</a></p>
+                    <div className="col border" key={company[0].id}>
+                        <h1>{company[0].name}</h1>
+                        <h2>{company[0].address}</h2>
+                        <h2><a href={company[0].url} target="blank">{company[0].url}</a></h2>
                         <br></br>
-                        <div className="row">
-                            {company[1].length > 0 ?
-                            company[1].map(application => (
-                                <div className="col" key={application.id}><b>Open Positions</b>   
-                                    <p>Position: {application.position}</p>
-                                    <p>Hourly Pay: {application.hourly_pay}</p>
-                                    <p>Date: {formatDate(application.date)}</p>
+                        <div className="row">                           
+                        {company[1].length > 0 ?
+                            company[1].map(job => (
+                                <div className="col" key={job.id}>
+                                        <h2>Job Posting</h2>   
+                                        <h4>{job.position}</h4>
+                                        <h4>${job.hourly_pay}/hour</h4>
+                                        <h4>{formatDate(job.date)}</h4>
+                                    {job.applications.length > 0 ?
+                                        job.applications.map(applicant => (
+                                            <Application 
+                                            key={applicant[1]}
+                                            applicant={applicant} 
+                                            job={job}
+                                            acceptApplicant={acceptApplicant}
+                                            denyApplicant={denyApplicant}
+                                            decided={decided}
+                                            />
+                                            ))
+                                            : <h4>No applicants</h4> }
                                     <Button 
-                                        onClick={() => deleteJob(application.id)}
+                                        className="mb-3"
+                                        onClick={() => deleteJob(job.id)}
                                         variant="contained" 
                                         color="primary">
-                                        Delete Job
+                                        Remove Posting
                                     </Button>
-                                    <br></br><br></br>
-                                    {application.applications.length > 0 ?
-                                        application.applications.map(applicant => (
-                                        <div key={applicant[0]}>
-                                            <p>Applicant: {applicant[1]}</p>
-                                            <p>Status: {applicant[2]}</p>
-                                            {applicant[2] === "PENDING" && !decided ?
-                                            <div>
-                                                <Button onClick={acceptApplicant([applicant[1], application.id])} color="secondary">Accept</Button>
-                                                <Button onClick={denyApplicant([applicant[1], application.id])} color="primary">Deny</Button>
-                                            </div>
-                                            : null }
-                                            <div>
-                                                {errors.length ?
-                                                <p>{errors}</p>
-                                                : null }
-                                            </div>
-                                            <br></br>
-                                        </div> 
-                                        ))
-                                    : <p>No applicants</p> }
+                                    <div>
+                                    {errors.length ?
+                                        <p>{errors}</p>
+                                    : null }
+                                    </div>
                                 </div>
                                 ))
-                            : <p>No applications to display</p>}
+                            : <h4>No applications to display</h4>}
                          </div>
                     </div>
                 ))}

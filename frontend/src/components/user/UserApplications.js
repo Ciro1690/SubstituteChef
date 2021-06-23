@@ -29,21 +29,21 @@ const UserApplications = ({currentUser}) => {
 
     return (
         applications.length > 0 ?
-        <div>
+        <div className="mt-3">
             <h1>Current Applications</h1>
-            <div className="container">
+            <div className="container border mt-5">
                 {!isLoaded ? <div>Loading...</div> : null}
                 <div className="row">
                     {applications.map(application => (
-                        <div className="col" key={application.job.id}>
-                            <h3>{application.company.name}</h3>
-                            <p>Address: {application.company.address}</p>
-                            <p>URL: {application.company.url}</p>
-                            <h3>Application</h3>
-                            <p>Position: {application.job.position}</p>
-                            <p>Hourly Pay: {application.job.hourly_pay}</p>
-                            <p>Date: {formatDate(application.job.date)}</p>
-                            <p>Status: {application.status}</p><br></br>
+                        <div className="col border" key={application.job.id}>
+                            <h1>{application.company.name}</h1>
+                            <h4>{application.company.address}</h4>
+                            <h4><a href={application.company.url}>{application.company.url}</a></h4>
+                            <h2>Application</h2>
+                            <h4>{application.job.position}</h4>
+                            <h4>${application.job.hourly_pay}/hour</h4>
+                            <h4>{formatDate(application.job.date)}</h4>
+                            <h4>{application.status}</h4>
                         </div>
                     ))}
                 </div>

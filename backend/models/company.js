@@ -1,7 +1,6 @@
 const db = require("../db");
-const axios = require('axios');
 const { NotFoundError, BadRequestError } = require("../expressError");
-require('dotenv').config()
+const { getCoords } = require('../helpers/maps');
 
 class Company {
 
@@ -15,44 +14,35 @@ class Company {
         if (duplicateCheck.rows[0])
             throw new BadRequestError(`Duplicate company: ${name}`);
 
-        let coordinates = [];
-        const coords = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-                    params:{
-                        address: address,
-                        key: process.env.REACT_APP_API_KEY
-                    }
-                })
-                    const location = coords.data.results[0].geometry.location
-                    coordinates.push(location.lat)
-                    coordinates.push(location.lng)
+        let coordinates = await getCoords(address);
 
-                    const result = await db.query(
-                    `INSERT INTO companies
-                        (name,
-                        url,
-                        address,
-                        lat,
-                        lng,
-                        username)
-                    VALUES ($1, $2, $3, $4, $5, $6)
-                    RETURNING id, name, url, address, lat, lng, username`,
-                    [
-                    name,
-                    url,
-                    address,
-                    coordinates[0],
-                    coordinates[1],
-                    username
-                    ]                
-                )
+        const result = await db.query(
+        `INSERT INTO companies
+            (name,
+            url,
+            address,
+            lat,
+            lng,
+            username)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id, name, url, address, lat, lng, username`,
+        [
+        name,
+        url,
+        address,
+        coordinates[0],
+        coordinates[1],
+        username
+        ]                
+        )
 
-                let company = result.rows
-                if (!company) {
-                    throw new NotFoundError(`No username ${username}`, 400)
-                }
-                return company;
-                    
+        let company = result.rows
+        if (!company) {
+            throw new NotFoundError(`No username ${username}`, 400)
         }
+        return company;
+        
+    }
 
     static async get(username) {
         const usernameCheck = await db.query(
@@ -124,24 +114,30 @@ class Company {
 
     static async update(id, data) {
         if (Object.keys(data).length === 0) throw new BadRequestError("No Data");
-            const result = await db.query(
-                `UPDATE companies
-                 SET name=$1,
-                    url=$2,
-                    address=$3
-                 WHERE id = $4
-                 RETURNING id, name, url, address, username`,
-                [
-                data.name,
-                data.url,
-                data.address,
-                id
-                ]                
-            );
-            const company = result.rows[0];
-            
-            if (!company) throw new NotFoundError(`No id ${id}`);
-            return company;
+
+        let coordinates = await getCoords(data.address);
+        const result = await db.query(
+            `UPDATE companies
+                SET name=$1,
+                url=$2,
+                address=$3,
+                lat=$4,
+                lng=$5
+                WHERE id = $6
+                RETURNING id, name, url, address, username`,
+            [
+            data.name,
+            data.url,
+            data.address,
+            coordinates[0],
+            coordinates[1],
+            id
+            ]                
+        );
+        const company = result.rows[0];
+        
+        if (!company) throw new NotFoundError(`No id ${id}`);
+        return company;
     }
 
         static async remove(id) {

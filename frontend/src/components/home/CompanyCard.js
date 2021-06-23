@@ -36,18 +36,18 @@ const CompanyCard = ({ company, setClickedCompany, clickedCompany }) => {
             <div onClick={setCompany} className={clickedCompany.name === name ? "selected-card row" : "inner-card row"}>
                 <div className="company-info text-center col">
                     <h1>{name}</h1>
-                    <h4>{address}</h4>
-                    <h5><a href={url} target="blank">{url}</a></h5>
-                    <h5><a href={directions} rel="noreferrer" target="_blank">Get Directions</a></h5>
+                    <h2>{address}</h2>
+                    <h4><a href={url} target="blank">{url}</a></h4>
+                    <h4><a href={directions} rel="noreferrer" target="_blank">Get Directions</a></h4>
                 </div>
                 {currentUser.currentUser == null ? null 
                 :
                 <div className="company-info col">
-                    <h5 className="text-center">Jobs</h5>
+                    <h2 className="text-center">Jobs</h2>
                     <div className="row">
                     {jobs.length > 0 ? jobs.map(job => (
                         <JobCard key={job.id} job={job}/>
-                    )) : <p className="text-center">No jobs to display</p>}
+                    )) : <h4 className="text-center">No jobs to display</h4>}
                     </div>
                 </div>
                  }

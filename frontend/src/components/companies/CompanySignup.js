@@ -77,7 +77,7 @@ const CompanySignup = ({ currentUser }) => {
                 <Button 
                     type="submit"
                     variant="contained" 
-                    color="primary">Create Company</Button>
+                    color="secondary">Create Company</Button>
                 <div>
                     {errors.length ?
                         <p>{errors}</p>
