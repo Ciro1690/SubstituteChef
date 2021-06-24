@@ -27,10 +27,12 @@ app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+/** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
     return next(new NotFoundError());
 });
 
+/** Generic error handler; anything unhandled goes here. */
 app.use(function (error, req, res, next) {
     let status = error.status || 500;
     let message = error.message
