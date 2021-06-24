@@ -13,7 +13,6 @@ const Map = ({ companies, clickedCompany, setClickedCompany }) => {
     const handleClick = (company) => {
         setClickedCompany(company)
     }
-    console.log(process.env.REACT_APP_API_KEY)
     return (
             <LoadScript
                 googleMapsApiKey= {process.env.REACT_APP_API_KEY}>
