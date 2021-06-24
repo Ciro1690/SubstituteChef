@@ -2,6 +2,6 @@
 
 const app = require("./app");
 
-app.listen(3001, function () {
-  console.log(`Started on http://localhost:3001`);
+app.listen(5432, function () {
+  console.log(`Started on PORT 5432`);
 });
