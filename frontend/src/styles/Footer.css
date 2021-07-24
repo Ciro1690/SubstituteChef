@@ -1,12 +1,15 @@
-.footer {
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    bottom: 0;
+
+#page-container {
+    position: relative;
+    min-height: 100vh;
 }
 
-.footer-options {
-    float: left;
-    margin-top: 10px;
-    margin-right: 20px;
+#content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+}
+
+.footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }

@@ -1,12 +1,13 @@
-# Capstone 2 Project
 
+![Logo](https://live.staticflickr.com/65535/51332572023_d5b2f7b663_m.jpg)
+
+    
 # Substitute Chef
 
-A website where restaurant workers can apply to shifts at local restaurants
+A website where restaurant workers can search for and apply for local jobs
 
 Live site can be viewed at [Substitute Chef](https://subchef.surge.sh/)
-
-## Overview
+## Features
 
 - Allows a restaurant worker to connect with companies and schedule a shift of work
 - Targeted toward restaurant workers who need assistance finding work and restaurants in need of workers
@@ -14,49 +15,41 @@ Live site can be viewed at [Substitute Chef](https://subchef.surge.sh/)
 - Workers can view company information and apply to open jobs
 - A map from GoogleMaps API displays a marker for each company
 - A user can also create a company and post job openings
-- A user can view job applications and approve or deny them
+- A company can view job applications and approve or deny them
 - An email is sent to the company when a user applies to a job and to the user when a company updates the status of the job application
 - Site is hosted with restaurants in San Diego
 
-## Schema 
+  
+## Tech Stack
 
-- Table for user containing username, password, first name, last name, and email
-- Table for company containing id, name, url, address, latitude, longitude and username
-- Table for job containing id, position, hourly pay, date and company id
-- Table for application containing status, username and job id
+**Client:** React, MaterialUI
 
-## Potential API issues
+**Server:** Node, Express
 
-- Error handling if API is down or doesn't return a 200 response code
+**API:** GoogleMaps, SendGrid
 
-## Functionality/User Flow
+  
+## Installation
 
-### User Functionality
+Install substitute-chef with npm
 
-- Upon entering the webpage, a user can choose to sign up or login
-- Once logged in as a user, user can view/edit user profile
-- A user can view all open job applications
-- A user can also search for jobs with an accompanying interactive google map
-- A user can apply directly to open jobs from the homepage
-- After applying, an email is sent to the company
+```bash
+  npm install substitute-chef
+  cd substitute-chef
+    -cd frontend
+      npm start
+    -cd backend
+      npm start
+```
+    
+## Screenshots
 
-### Company Functionality
+![App Screenshot](https://live.staticflickr.com/65535/51332389411_d43b6307d9_m.jpg)
 
-- A user can register companies
-- Once a company is registered, A user can create a listing for a job which includes position, hourly pay, and the date
-- A user can view/edit its company profiles
-- A company can view applications and approve or deny applications
-- Once the status of an application is updated, an email is sent to the user with the new information
+![App Screenshot](https://live.staticflickr.com/65535/51333111799_9d19a30251_m.jpg)
 
-## Data
-- Google Maps API is used to search for Geolocations from the address and markers are created for each company
-- SendGrid is used to send emails 
+![App Screenshot](https://live.staticflickr.com/65535/51333380970_67f669580f_m.jpg)
 
-## Technology Stack
-- Application is built using Javascript, React, Node and Express
+## Author
 
-## Stretch Goals
-- Restaurants can pay employees through the site
-- Liability waver for both to sign
-- Ratings for users and companies
-- Add profile photo and company photo
+- [Ciro Griffiths](https://www.github.com/Ciro1690)
