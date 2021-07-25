@@ -43,11 +43,11 @@ Install substitute-chef with npm
     
 ## Screenshots
 
-![App Screenshot](https://live.staticflickr.com/65535/51332389411_d43b6307d9.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51332389411_4158ed5822_o.png)
 
-![App Screenshot](https://live.staticflickr.com/65535/51333111799_9d19a30251.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51333111799_b8eeebb081_o.png)
 
-![App Screenshot](https://live.staticflickr.com/65535/51333380970_67f669580f.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51333380970_93c7424f47_o.png)
 
 ## Author
 
