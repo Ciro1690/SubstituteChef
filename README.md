@@ -1,7 +1,6 @@
 
-![Logo](https://live.staticflickr.com/65535/51332572023_d5b2f7b663_m.jpg)
+![Logo](https://live.staticflickr.com/65535/51335673305_203d5fdd33_w.jpg)
 
-    
 # Substitute Chef
 
 A website where restaurant workers can search for and apply for local jobs
@@ -44,11 +43,11 @@ Install substitute-chef with npm
     
 ## Screenshots
 
-![App Screenshot](https://live.staticflickr.com/65535/51332389411_d43b6307d9_m.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51332389411_d43b6307d9.jpg)
 
-![App Screenshot](https://live.staticflickr.com/65535/51333111799_9d19a30251_m.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51333111799_9d19a30251.jpg)
 
-![App Screenshot](https://live.staticflickr.com/65535/51333380970_67f669580f_m.jpg)
+![App Screenshot](https://live.staticflickr.com/65535/51333380970_67f669580f.jpg)
 
 ## Author
 
