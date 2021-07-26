@@ -38,7 +38,7 @@ Live site can be viewed at [Substitute Chef](https://subchef.surge.sh/)
 
 ## Functionality/User Flow
 
-# User Functionality
+### User Functionality
 - Upon entering the webpage, a user can choose to sign up or login
 - Once logged in as a user, user can view/edit user profile
 - A user can view all open job applications
@@ -46,7 +46,7 @@ Live site can be viewed at [Substitute Chef](https://subchef.surge.sh/)
 - A user can apply directly to open jobs from the homepage
 - After applying, an email is sent to the company
 
-# Company Functionality
+### Company Functionality
 - A user can register companies
 - Once a company is registered, A user can create a listing for a job which includes position, hourly pay, and the date
 - A user can view/edit its company profiles
