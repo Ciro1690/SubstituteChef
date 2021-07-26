@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import CompanyList from '../home/CompanyList';
+import HomeSwitch from '../utilities/HomeSwitch';
 import NavBar from '../nav/NavBar';
 import Login from '../auth/Login';
 import UserSignup from '../auth/UserSignup';
@@ -79,7 +79,7 @@ const Routes = () => {
                         <img className="logo2" src={logo} alt="logo"/><br></br>
                         <Switch>
                             <Route exact path="/">
-                                <CompanyList />
+                                <HomeSwitch />
                             </Route>
                             <Route exact path="/signup">
                                 <UserSignup registerUser={registerUser}/>
@@ -110,7 +110,7 @@ const Routes = () => {
                             </Route>
                         </Switch>
                     </div>
-                    <h5 className="footer">© Substitute Chef, 2021</h5>
+                    <h5 className="footer mt-3">© Substitute Chef, 2021</h5>
                 </div>
             </UserContext.Provider>
         </BrowserRouter>
